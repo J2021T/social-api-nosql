@@ -9,7 +9,7 @@ const userController = {
             select: '-__v'
         })
         .select('-__v')
-        .userController({ _id: -1 })
+        .sort({ _id: -1 })
         .then(dbUserData => res.json(dbUserData))
         .catch(err => {
             console.log(err);
@@ -25,7 +25,7 @@ const userController = {
             select: '-__v'
         })
         .select('-__v')
-        .userController({ _id: -1 })
+
         .then(dbUserData => {
             if (!dbUserData) {
                 res.sendStatus(404).json({ message: 'no user with that id found' });
@@ -66,12 +66,12 @@ const userController = {
             if (!dbUserData) {
                 res.status(404).json({ message: 'no user found with that id' });
                 return;
+            } else if (dbUserData.thoughts) {
+                return Thought.deleteMany(
+                    { _id: { $in: dbUserData.thoughts } }
+                );
             }
-            return Thought.deleteMany(
-                { _id: {
-                    $in: dbUserData.thoughts
-                }}
-            )
+            res.json(dbUserData);
         })
         .catch(err => res.json(err));
     },
