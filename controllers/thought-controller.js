@@ -71,7 +71,7 @@ const thoughtController = {
     },
 
     // delete a comment
-    deleteComment({ params }, res) {
+    deleteThought({ params }, res) {
         Thought.findOneAndDelete({ _id: params.id})
         .then(dbThoughtData => {
             if (!dbThoughtData) {
@@ -105,7 +105,7 @@ const thoughtController = {
     removeReaction({ params }, res) {
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
-            { $pull: { reactions: params.reactionsId } },
+            { $pull: { reactions: params.reactionId } },
             { new: true }
         )
         .then(dbThoughtData => {
@@ -117,3 +117,5 @@ const thoughtController = {
         .catch(err => res.json(err));
     }
 };
+
+module.exports = thoughtController;
